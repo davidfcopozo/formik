@@ -2,11 +2,14 @@ import React from "react";
 /* import { useFormik } from "formik"; */
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import TextError from "./TextError";
 
 const initialValues = {
   name: "",
   email: "",
   random: "",
+  comments: "",
+  address: "",
 };
 
 const onSubmit = (values) => {
@@ -38,20 +41,72 @@ const NewTestForm = () => {
       <Form>
         <div className="form-control">
           <label htmlFor="name">Name</label>
-          <Field type="text" name="name" id="name" required />
-          <ErrorMessage name="name" />
+          <Field
+            type="text"
+            name="name"
+            id="name"
+            placeholder="Type in your name"
+            required
+          />
+          <ErrorMessage name="name" component={TextError} />
         </div>
 
         <div className="form-control">
           <label htmlFor="email">E-mail</label>
-          <Field type="email" name="email" id="email" required />
-          <ErrorMessage name="email" />
+          <Field
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Type in your E-mail"
+            required
+          />
+          <ErrorMessage name="email">
+            {(errorMsg) => <div className="error">{errorMsg}</div>}
+          </ErrorMessage>
         </div>
 
         <div className="form-control">
           <label htmlFor="random">Random</label>
-          <Field type="text" name="random" id="random" required />
+          <Field
+            type="text"
+            name="random"
+            id="random"
+            placeholder="Type in a random thing"
+            required
+          />
           <ErrorMessage name="random" />
+        </div>
+
+        <div className="form-control">
+          <label htmlFor="comments">Comments</label>
+          {/* as="" property is like the type="" property in HTML. It has "text" as default value, but we can use textarea, select or a custom React component*/}
+          <Field
+            as="textarea"
+            name="comments"
+            id="comments"
+            placeholder="Type in your comment"
+            required
+          />
+          <ErrorMessage name="comments" />
+        </div>
+
+        <div className="form-control">
+          <label htmlFor="comments">Address</label>
+          {/* */}
+          <Field name="address">
+            {(props) => {
+              console.log(props);
+              const { field, form, meta } = props;
+              return (
+                <div>
+                  <input type="text" id="address" {...field} />
+                  {meta.touched && meta.error ? <div>{meta.error}</div> : null}
+                </div>
+              );
+            }}
+          </Field>
+
+          <ErrorMessage name="address" />
         </div>
 
         <button type="submit">Submit</button>
